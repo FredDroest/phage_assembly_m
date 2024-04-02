@@ -15,16 +15,11 @@ process MANTLE_STAGE_INPUTS {
 
     output:
     path('*.fastq.gz'), emit: fastq_ch
-    path("invitris.txt"), emit: test_ch
 
     script:
     def stage_directory = "./"
 
     """
-    test.sh
-
-    echo "INVITRIS" > ${stage_directory}"/invitris.txt"
-
     get_data.py ${pipeline_run_id} ${stage_directory} \
                 --tenant ${TENANT} \
                 --mantle_env ${ENV}
@@ -34,19 +29,16 @@ process MANTLE_STAGE_INPUTS {
 process ASSEMBLY {
     tag "${pipeline_run_id}-AssemblyPipeline"
 
-    publishDir "${params.outdir}/mantle_upload_results", mode: 'copy'
+    publishDir "${outdir}/phage-assembly", mode: 'copy'
 
-    secret 'MANTLE_USER'
-    secret 'MANTLE_PASSWORD'
-
-    container '663344187369.dkr.ecr.eu-central-1.amazonaws.com/invitris-mantle:latest'
+    container '663344187369.dkr.ecr.eu-central-1.amazonaws.com/phage_assembly_mantle:latest'
 
     input:
-    path outdir, stageAs: 'results/*'
+    path outdir, stageAs: 'results/prokka/*'
     val fastqfile
 
     output:
-    path('*prokka*'), emit: fastq_ch
+    path('*prokka*'), emit: assemblyfolder
 
     script:
 
@@ -69,7 +61,6 @@ process MANTLE_UPLOAD_RESULTS {
     val pipeline_run_id
     path outdir, stageAs: 'results/*'
     val assemblydir
-    val input_test_ch
 
     output:
     tuple val(pipeline_run_id), path('*.txt'), emit: completion_timestamp
@@ -100,7 +91,6 @@ workflow {
     MANTLE_UPLOAD_RESULTS (
         params.pipeline_run_id,
         params.outdir,
-        ASSEMBLY.out.assemblyfolder,
-        MANTLE_STAGE_INPUTS.out.test_ch
+        ASSEMBLY.out.assemblyfolder
     )
 }

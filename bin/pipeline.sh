@@ -43,11 +43,15 @@ echo "kingdom: $kingdom"
 
 #INPUT-Variables
 in_name="$(basename -- "$input")"
+in_name="${in_name%.*}"
 
 echo "in_name: $in_name"
 
 #check validity of inputs
 if [ ! -d "$input" ]; then
+  elif [ -f "$input" ]; then
+      echo "input is a FILE"
+      continue
   echo "ERROR: Path $input does not exist, please check!"
   else echo "input-path OK"
 fi
@@ -59,9 +63,9 @@ if [ ! -d "$outputpath" ]; then
 fi
 
 #list all fastq-archive-files 
-gzlist=$(find "$input" -iname "*q.gz" | sort -V)
-fqlist=$(find "$input" -iname "*fq" | sort -V)
-fastqlist=$(find "$input" -iname "*fastq" | sort -V)
+# gzlist=$(find "$input" -iname "*q.gz" | sort -V)
+# fqlist=$(find "$input" -iname "*fq" | sort -V)
+# fastqlist=$(find "$input" -iname "*fastq" | sort -V)
 
 # and check if it already exists afterwards
 # if [ -f "$outputpath/${in_name}.fastq.gz" ]; then
@@ -69,15 +73,16 @@ fastqlist=$(find "$input" -iname "*fastq" | sort -V)
 #   rm "$outputpath/${in_name}.fastq.gz"
 #   else echo "keeping file"
 # fi
-gzcombined="$outputpath/${in_name}.fastq.gz"
+# gzcombined="$outputpath/${in_name}.fastq.gz"
+gzcombined=$input
 #combine these fastq-files
-gzcounter=0
-for name in $gzlist; do
-  echo "FQ.GZ: $name"
-  cat "$name" >> "$gzcombined"
-  gzcounter=$gzcounter+1
-done
-echo "in $gzcombined"
+# gzcounter=0
+# for name in $gzlist; do
+#   echo "FQ.GZ: $name"
+#   cat "$name" >> "$gzcombined"
+#   gzcounter=$gzcounter+1
+# done
+# echo "in $gzcombined"
 
 echo "#################"
 echo "unzipping and NanoFilt-ering"
