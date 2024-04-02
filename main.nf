@@ -68,7 +68,8 @@ process MANTLE_UPLOAD_RESULTS {
     input:
     val pipeline_run_id
     path outdir, stageAs: 'results/*'
-    val _last_module_completed
+    val assemblydir
+    val input_test_ch
 
     output:
     tuple val(pipeline_run_id), path('*.txt'), emit: completion_timestamp
