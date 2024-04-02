@@ -48,13 +48,13 @@ in_name="${in_name%.*}"
 echo "in_name: $in_name"
 
 #check validity of inputs
-if [ ! -d "$input" ]; then
-  elif [ -f "$input" ]; then
-      echo "input is a FILE"
-      continue
-  echo "ERROR: Path $input does not exist, please check!"
-  else echo "input-path OK"
+if [ ! -f "$input" ]; then
+    echo "input is not a valid FILE"
+    exit
+echo "ERROR: Path $input does not exist, please check!"
+else echo "input-path OK"
 fi
+
 if [ ! -d "$outputpath" ]; then
   echo "WARNING: $outputpath does not exist, directory will be created"
   echo "creating path $outputpath"

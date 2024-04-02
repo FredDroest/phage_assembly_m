@@ -1,6 +1,6 @@
 
 process MANTLE_STAGE_INPUTS {
-    tag "${pipeline_run_id}-mantleSDK_stageInputs"
+    tag "${pipeline_run_id}_mantleSDK_stageInputs"
 
     secret 'MANTLE_USER'
     secret 'MANTLE_PASSWORD'
@@ -27,7 +27,7 @@ process MANTLE_STAGE_INPUTS {
 }
 
 process ASSEMBLY {
-    tag "${pipeline_run_id}-AssemblyPipeline"
+    tag "${pipeline_run_id}_AssemblyPipeline"
 
     publishDir "${outdir}/phage-assembly", mode: 'copy'
 
