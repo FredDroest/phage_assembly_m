@@ -43,7 +43,7 @@ echo "kingdom: $kingdom"
 
 #INPUT-Variables
 in_name="$(basename -- "$input")"
-in_name="${in_name%.*}"
+filename="${in_name%%.*}"
 
 echo "in_name: $in_name"
 

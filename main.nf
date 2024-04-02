@@ -34,11 +34,11 @@ process ASSEMBLY {
     container '663344187369.dkr.ecr.eu-central-1.amazonaws.com/phage_assembly_mantle:latest'
 
     input:
-    path outdir, stageAs: 'results/prokka/*'
+    path outdir, stageAs: 'results/*'
     val fastqfile
 
     output:
-    path('*prokka*'), emit: assemblyfolder
+    path('*.f*'), emit: assemblyfolder
 
     script:
 
