@@ -46,7 +46,7 @@ process ASSEMBLY {
     val fastqfile
 
     output:
-    path('/assembly'), emit: fastq_ch
+    path('*prokka*'), emit: fastq_ch
 
     script:
 
