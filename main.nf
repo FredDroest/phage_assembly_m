@@ -29,12 +29,12 @@ process MANTLE_STAGE_INPUTS {
 process ASSEMBLY {
     tag "${pipeline_run_id}_AssemblyPipeline"
 
-    publishDir "${outdir}/phage-assembly", mode: 'copy'
+    publishDir "${params.outdir}/phage-assembly", mode: 'copy'
 
     container '663344187369.dkr.ecr.eu-central-1.amazonaws.com/phage_assembly_mantle:latest'
 
     input:
-    path outdir, stageAs: 'results/*'
+    path outdir
     val fastqfile
 
     output:
@@ -43,7 +43,7 @@ process ASSEMBLY {
     script:
 
     """
-    pipeline.sh -i ${fastqfile} -o ${outdir}
+    pipeline.sh -i ${fastqfile} -o ${publishDir}
     """
 }
 
