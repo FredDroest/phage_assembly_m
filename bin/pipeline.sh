@@ -86,12 +86,12 @@ gzcombined=$input
 
 echo "#################"
 echo "unzipping and NanoFilt-ering"
-$(gunzip -c "$gzcombined.fastq.gz" | NanoFilt --logfile $outputpath/$in_name"_trimming.log" -q $qualityscore -l $trimlen > $outputpath/$in_name"_trimmed_q_"$qualityscore"_l_"$trimlen".fastq")
-$(rm $outputpath/$in_name".fastq.gz")
+$(gunzip -c "$gzcombined" | NanoFilt --logfile $outputpath/$in_name"_trimming.log" -q $qualityscore -l $trimlen > $outputpath/$filename"_trimmed_q_"$qualityscore"_l_"$trimlen".fastq")
+$(rm $outputpath/$filename".fastq.gz")
 echo "#################"
 echo "Running Flye-assembly"
 # $(flye --nano-raw $outputpath/$in_name"_trimmed_q_"$qualityscore"_l_"$trimlen".fastq" --out-dir $outputpath"/flye_assembly" --threads 4 --asm-coverage $coverage --iterations 2 --genome-size $genomesize)
-$(flye --nano-raw $outputpath/$in_name"_trimmed_q_"$qualityscore"_l_"$trimlen".fastq" --out-dir $outputpath"/flye_assembly" --threads 4 --iterations 3 )
+$(flye --nano-raw $outputpath/$filename"_trimmed_q_"$qualityscore"_l_"$trimlen".fastq" --out-dir $outputpath"/flye_assembly" --threads 4 --iterations 3 )
 echo "#################"
 echo "running medaka"
 # change model after new basecalling to r941_min_sup_g507
@@ -102,7 +102,7 @@ echo "Running minimap"
 if [ -f "$outputpath""/flye_medaka/consensus.fasta" ]; then
   #$(bowtie2-build $outputpath"/flye_medaka/consensus.fasta")
   echo "Running minimap(on medaka consensus)"
-  $(minimap2 -ax map-ont $outputpath"/flye_medaka/consensus.fasta" $outputpath/$in_name"_trimmed_q_"$qualityscore"_l_"$trimlen".fastq" --secondary=no | samtools view -bS | samtools sort > $outputpath/"ONT_trimmed_q_"$qualityscore"_l_"$trimlen"_to_assembly.bam"; samtools index $outputpath"/ONT_trimmed_q_"$qualityscore"_l_"$trimlen"_to_assembly.bam")
+  $(minimap2 -ax map-ont $outputpath"/flye_medaka/consensus.fasta" $outputpath/$filename"_trimmed_q_"$qualityscore"_l_"$trimlen".fastq" --secondary=no | samtools view -bS | samtools sort > $outputpath/"ONT_trimmed_q_"$qualityscore"_l_"$trimlen"_to_assembly.bam"; samtools index $outputpath"/ONT_trimmed_q_"$qualityscore"_l_"$trimlen"_to_assembly.bam")
   echo "#################"
   echo "Running Prokka (on medaka consensus)"
   $(prokka $outputpath"/flye_medaka/consensus.fasta" --outdir $outputpath"/prokka_annotation" --kingdom $kingdom --cpu 4 --prefix "PROKKA" --force)
