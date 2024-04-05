@@ -83,10 +83,12 @@ gzcombined=$input
 #   gzcounter=$gzcounter+1
 # done
 # echo "in $gzcombined"
+findfastq=$(find . -type f -name "*_assemble.fastq.gz")
+
 
 echo "#################"
 echo "unzipping and NanoFilt-ering"
-$(gunzip -c "$gzcombined" | NanoFilt --logfile $outputpath/$in_name"_trimming.log" -q $qualityscore -l $trimlen > $outputpath/$filename"_trimmed_q_"$qualityscore"_l_"$trimlen".fastq")
+$(gunzip -c "$findfastq" | NanoFilt --logfile $outputpath/$in_name"_trimming.log" -q $qualityscore -l $trimlen > $outputpath/$filename"_trimmed_q_"$qualityscore"_l_"$trimlen".fastq")
 $(rm $outputpath/$filename".fastq.gz")
 echo "#################"
 echo "Running Flye-assembly"
