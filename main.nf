@@ -43,7 +43,7 @@ process ASSEMBLY {
     script:
 
     """
-    pipeline.sh -i ${fastqfile} -o ${publishDir}
+    pipeline.sh -i ${fastqfile} -o ${outdir}
     """
 }
 
