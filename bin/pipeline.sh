@@ -96,7 +96,7 @@ echo "Running Flye-assembly"
 $(free)
 $(date)
 # $(flye --nano-raw $outputpath/$in_name"_trimmed_q_"$qualityscore"_l_"$trimlen".fastq" --out-dir $outputpath"/flye_assembly" --threads 4 --asm-coverage $coverage --iterations 2 --genome-size $genomesize)
-$(flye --nano-raw $outputpath/$filename"_trimmed_q_"$qualityscore"_l_"$trimlen".fastq" --out-dir $outputpath"/flye_assembly" --threads 4 --iterations 3 )
+$(flye --nano-raw $outputpath/$filename"_trimmed_q_"$qualityscore"_l_"$trimlen".fastq" --out-dir $outputpath"/flye_assembly" --threads 8 --iterations 2 )
 echo "#################"
 echo "running medaka"
 $(date)
