@@ -91,12 +91,14 @@ echo "#################"
 echo "unzipping and NanoFilt-ering"
 $(gunzip -c "$findfastq" | NanoFilt --logfile $outputpath/$in_name"_trimming.log" -q $qualityscore -l $trimlen > $outputpath/$filename"_trimmed_q_"$qualityscore"_l_"$trimlen".fastq")
 # $(rm $outputpath/$filename".fastq.gz")
+fastq=$(find $outputpath -type f -name "*_assemble.fastq.gz")
+echo "Trimout: $fastq"
 echo "#################"
 echo "Running Flye-assembly"
-$(free)
-$(date)
+free
+date
 # $(flye --nano-raw $outputpath/$in_name"_trimmed_q_"$qualityscore"_l_"$trimlen".fastq" --out-dir $outputpath"/flye_assembly" --threads 4 --asm-coverage $coverage --iterations 2 --genome-size $genomesize)
-$(flye --nano-raw $outputpath/$filename"_trimmed_q_"$qualityscore"_l_"$trimlen".fastq" --out-dir $outputpath"/flye_assembly" --threads 8 --iterations 2 )
+flye --nano-raw $outputpath/$filename"_trimmed_q_"$qualityscore"_l_"$trimlen".fastq" --out-dir $outputpath"/flye_assembly" --threads 8 --asm-coverage $coverage --iterations 2
 echo "#################"
 echo "running medaka"
 $(date)
