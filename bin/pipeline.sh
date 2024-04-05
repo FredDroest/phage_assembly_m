@@ -85,7 +85,7 @@ gzcombined=$input
 # echo "in $gzcombined"
 findfastq=$(find . -type f -name "*_assemble.fastq.gz")
 
-echo "FASTQ: $findfastq \n"
+echo "FASTQ: $findfastq"
 
 echo "#################"
 echo "unzipping and NanoFilt-ering"
@@ -93,10 +93,13 @@ $(gunzip -c "$findfastq" | NanoFilt --logfile $outputpath/$in_name"_trimming.log
 # $(rm $outputpath/$filename".fastq.gz")
 echo "#################"
 echo "Running Flye-assembly"
+$(free)
+$(date)
 # $(flye --nano-raw $outputpath/$in_name"_trimmed_q_"$qualityscore"_l_"$trimlen".fastq" --out-dir $outputpath"/flye_assembly" --threads 4 --asm-coverage $coverage --iterations 2 --genome-size $genomesize)
 $(flye --nano-raw $outputpath/$filename"_trimmed_q_"$qualityscore"_l_"$trimlen".fastq" --out-dir $outputpath"/flye_assembly" --threads 4 --iterations 3 )
 echo "#################"
 echo "running medaka"
+$(date)
 # change model after new basecalling to r941_min_sup_g507
 # $(medaka_consensus -d $outputpath"/flye_assembly/assembly.fasta" -i $outputpath/$in_name"_trimmed_q_"$qualityscore"_l_"$trimlen".fastq" -o $outputpath"/flye_medaka" -t 2 -m r941_min_hac_g507 )
 echo "#################"
