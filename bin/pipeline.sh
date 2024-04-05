@@ -85,11 +85,12 @@ gzcombined=$input
 # echo "in $gzcombined"
 findfastq=$(find . -type f -name "*_assemble.fastq.gz")
 
+echo "FASTQ: $findfastq \n"
 
 echo "#################"
 echo "unzipping and NanoFilt-ering"
 $(gunzip -c "$findfastq" | NanoFilt --logfile $outputpath/$in_name"_trimming.log" -q $qualityscore -l $trimlen > $outputpath/$filename"_trimmed_q_"$qualityscore"_l_"$trimlen".fastq")
-$(rm $outputpath/$filename".fastq.gz")
+# $(rm $outputpath/$filename".fastq.gz")
 echo "#################"
 echo "Running Flye-assembly"
 # $(flye --nano-raw $outputpath/$in_name"_trimmed_q_"$qualityscore"_l_"$trimlen".fastq" --out-dir $outputpath"/flye_assembly" --threads 4 --asm-coverage $coverage --iterations 2 --genome-size $genomesize)
