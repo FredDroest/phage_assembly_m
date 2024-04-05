@@ -28,6 +28,8 @@ process MANTLE_STAGE_INPUTS {
 
 process ASSEMBLY {
     tag "${pipeline_run_id}_AssemblyPipeline"
+    memory '32 GB'
+    cpus '4'
 
     publishDir "${params.outdir}/phage-assembly", mode: 'copy'
 
