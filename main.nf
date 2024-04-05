@@ -14,7 +14,7 @@ process MANTLE_STAGE_INPUTS {
     val pipeline_run_id
 
     output:
-    file '*' into fastq_ch
+    path('*.fastq.gz'), emit: fastq_ch
 
     script:
     def stage_directory = "./"
@@ -38,7 +38,7 @@ process ASSEMBLY {
     val fastqfile
 
     output:
-    path('*.f*'), emit: assemblyfolder
+    path('*'), emit: assemblyfolder
 
     script:
 
