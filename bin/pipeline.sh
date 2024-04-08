@@ -105,7 +105,6 @@ echo "running medaka"
 # change model after new basecalling to r941_min_sup_g507
 # $(medaka_consensus -d $outputpath"/flye_assembly/assembly.fasta" -i $outputpath/$in_name"_trimmed_q_"$qualityscore"_l_"$trimlen".fastq" -o $outputpath"/flye_medaka" -t 2 -m r941_min_hac_g507 )
 echo "#################"
-exit
 if [ -f "$outputpath""/flye_medaka/consensus.fasta" ]; then
   #$(bowtie2-build $outputpath"/flye_medaka/consensus.fasta")
   echo "Running minimap(on medaka consensus)"
