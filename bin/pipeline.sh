@@ -111,10 +111,10 @@ if [ -f "$outputpath""/flye_medaka/consensus.fasta" ]; then
   $(prokka $outputpath"/flye_medaka/consensus.fasta" --outdir $outputpath"/prokka_annotation" --kingdom $kingdom --cpu 4 --prefix "PROKKA" --force)
   else
     echo "Running minimap(on flye assembly)"
-    minimap2 -ax map-ont $outputpath"/flye_assembly/assembly.fasta" $outputpath/$in_name"_trimmed_q_"$qualityscore"_l_"$trimlen".fastq" --secondary=no | samtools view -bS | samtools sort > $outputpath/"ONT_trimmed_q_"$qualityscore"_l_"$trimlen"_to_assembly.bam"; samtools index $outputpath"/ONT_trimmed_q_"$qualityscore"_l_"$trimlen"_to_assembly.bam"
+    $(minimap2 -ax map-ont $outputpath"/flye_assembly/assembly.fasta" $outputpath/$in_name"_trimmed_q_"$qualityscore"_l_"$trimlen".fastq" --secondary=no | samtools view -bS | samtools sort > $outputpath/"ONT_trimmed_q_"$qualityscore"_l_"$trimlen"_to_assembly.bam"; samtools index $outputpath"/ONT_trimmed_q_"$qualityscore"_l_"$trimlen"_to_assembly.bam")
     echo "#################"
     echo "Running Prokka (on flye assembly)"
-    prokka $outputpath"/flye_assembly/assembly.fasta" --outdir $outputpath"/prokka_annotation" --kingdom $kingdom --prefix "PROKKA" --force || echo "tbl2asn fail"
+    $(prokka $outputpath"/flye_assembly/assembly.fasta" --outdir $outputpath"/prokka_annotation" --kingdom $kingdom --prefix "PROKKA" --force || echo "tbl2asn fail")
 fi
 
 # pharokkainstall=$(mamba list pharokka | wc -l)

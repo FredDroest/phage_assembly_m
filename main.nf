@@ -44,10 +44,6 @@ process ASSEMBLY {
 
     script:
     """
-    echo "list1"
-    ls -l "${outdir}/stage_inputs"
-    echo "list2"
-    ls -lR ..
     pipeline.sh -i ${fastqfile} -o "${outdir}"
     echo "list3"
     ls -l "${outdir}"
