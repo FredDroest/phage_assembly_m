@@ -18,7 +18,6 @@ process MANTLE_STAGE_INPUTS {
 
     script:
     def stage_directory = "./"
-
     """
     get_data.py ${pipeline_run_id} ${stage_directory} \
                 --tenant ${TENANT} \
@@ -37,13 +36,13 @@ process ASSEMBLY {
 
     input:
     path outdir
+    val pipeline_run_id
     val fastqfile
 
     output:
-    path('*PROKKA*'), emit: assemblyfolder
+    tuple val(pipeline_run_id), path('prokka_annotation/PROKKA.*'), emit: assemblyfolder
 
     script:
-
     """
     pipeline.sh -i ${fastqfile} -o "${outdir}/OUTPUT"
     """
@@ -60,13 +59,13 @@ process ANNOTATE {
 
     input:
     path outdir
+    val pipeline_run_id
     val fastqfile
 
     output:
-    path('*'), emit: assemblyfolder
+    tuple val(pipeline_run_id), path('PROKKA.*'), emit: assemblyfolder
 
     script:
-
     """
     pipeline.sh -i ${fastqfile} -o ${outdir}
     """
@@ -91,7 +90,6 @@ process MANTLE_UPLOAD_RESULTS {
     tuple val(pipeline_run_id), path('*.txt'), emit: completion_timestamp
 
     script:
-
     """
     upload_data.py ${pipeline_run_id} ${outdir} \
                 --tenant ${TENANT} \
@@ -110,6 +108,7 @@ workflow {
 
     ASSEMBLY (
         params.outdir,
+        params.pipeline_run_id,
         MANTLE_STAGE_INPUTS.out.fastq_ch
     )
     // Sync outputs back into mantle
