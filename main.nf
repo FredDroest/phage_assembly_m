@@ -40,6 +40,29 @@ process ASSEMBLY {
     val fastqfile
 
     output:
+    path('/OUTPUT'), emit: assemblyfolder
+
+    script:
+
+    """
+    pipeline.sh -i ${fastqfile} -o "${outdir}/OUTPUT"
+    """
+}
+
+process ANNOTATE {
+    tag "${pipeline_run_id}_AssemblyPipeline"
+    memory '16 GB'
+    cpus '2'
+
+    publishDir "${params.outdir}/phage-assembly", mode: 'copy'
+
+    container '663344187369.dkr.ecr.eu-central-1.amazonaws.com/phage_assembly_mantle:latest'
+
+    input:
+    path outdir
+    val fastqfile
+
+    output:
     path('*'), emit: assemblyfolder
 
     script:
