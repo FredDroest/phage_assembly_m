@@ -44,32 +44,12 @@ process ASSEMBLY {
 
     script:
     """
-    pipeline.sh -i ${fastqfile} -o "${outdir}/OUTPUT"
+    ls -l
+    ls -l ..
+    pipeline.sh -i ${fastqfile} -o "${outdir}"
     """
 }
 
-process ANNOTATE {
-    tag "${pipeline_run_id}_AssemblyPipeline"
-    memory '16 GB'
-    cpus '2'
-
-    publishDir "${params.outdir}/phage-assembly", mode: 'copy'
-
-    container '663344187369.dkr.ecr.eu-central-1.amazonaws.com/phage_assembly_mantle:latest'
-
-    input:
-    path outdir
-    val pipeline_run_id
-    val fastqfile
-
-    output:
-    tuple val(pipeline_run_id), path('PROKKA.*'), emit: assemblyfolder
-
-    script:
-    """
-    pipeline.sh -i ${fastqfile} -o ${outdir}
-    """
-}
 
 process MANTLE_UPLOAD_RESULTS {
     tag "${pipeline_run_id}-mantleSDK_uploadResults"
