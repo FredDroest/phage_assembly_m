@@ -40,7 +40,8 @@ process ASSEMBLY {
     val fastqfile
 
     output:
-    tuple val(pipeline_run_id), path('prokka_annotation/'), emit: assemblyfolder
+    tuple val(pipeline_run_id), path('prokka_annotation/'), emit: annotationfolder
+    tuple val(pipeline_run_id), path('flye_assembly/'), emit: assemblyfolder
 
     script:
     """
@@ -66,6 +67,7 @@ process MANTLE_UPLOAD_RESULTS {
     input:
     val pipeline_run_id
     path outdir, stageAs: 'results/*'
+    val annotationdir
     val assemblydir
 
     output:
@@ -97,6 +99,7 @@ workflow {
     MANTLE_UPLOAD_RESULTS (
         params.pipeline_run_id,
         params.outdir,
+        ASSEMBLY.out.annotationfolder,
         ASSEMBLY.out.assemblyfolder
     )
 }
