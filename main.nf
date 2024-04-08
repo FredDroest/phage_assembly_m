@@ -30,7 +30,7 @@ process ASSEMBLY {
     memory '32 GB'
     cpus '4'
 
-    publishDir "${params.outdir}/phage-assembly", mode: 'copy'
+    publishDir "${params.outdir}/assembly-results", mode: 'copy'
 
     container '663344187369.dkr.ecr.eu-central-1.amazonaws.com/phage_assembly_mantle:latest'
 
