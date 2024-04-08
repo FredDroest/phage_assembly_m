@@ -40,11 +40,11 @@ process ASSEMBLY {
     val fastqfile
 
     output:
-    tuple val(pipeline_run_id), path('results/prokka_annotation/PROKKA.*'), emit: assemblyfolder
+    tuple val(pipeline_run_id), path('${params.outdir}/prokka_annotation/PROKKA.*'), emit: assemblyfolder
 
     script:
     """
-    ls -l results
+    ls -l "${outdir}"
     pipeline.sh -i ${fastqfile} -o "${outdir}"
     """
 }
