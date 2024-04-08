@@ -100,7 +100,6 @@ echo "running medaka"
 # change model after new basecalling to r941_min_sup_g507
 # $(medaka_consensus -d $outputpath"/flye_assembly/assembly.fasta" -i $outputpath/$in_name"_trimmed_q_"$qualityscore"_l_"$trimlen".fastq" -o $outputpath"/flye_medaka" -t 2 -m r941_min_hac_g507 )
 echo "#################"
-echo "Running minimap"
 exit
 if [ -f "$outputpath""/flye_medaka/consensus.fasta" ]; then
   #$(bowtie2-build $outputpath"/flye_medaka/consensus.fasta")
@@ -114,7 +113,7 @@ if [ -f "$outputpath""/flye_medaka/consensus.fasta" ]; then
     $(minimap2 -ax map-ont $outputpath"/flye_assembly/assembly.fasta" $outputpath/$in_name"_trimmed_q_"$qualityscore"_l_"$trimlen".fastq" --secondary=no | samtools view -bS | samtools sort > $outputpath/"ONT_trimmed_q_"$qualityscore"_l_"$trimlen"_to_assembly.bam"; samtools index $outputpath"/ONT_trimmed_q_"$qualityscore"_l_"$trimlen"_to_assembly.bam")
     echo "#################"
     echo "Running Prokka (on flye assembly)"
-    $(prokka $outputpath"/flye_assembly/assembly.fasta" --outdir $outputpath"/prokka_annotation" --kingdom $kingdom --prefix "PROKKA" --force || echo "tbl2asn fail")
+    $(prokka $outputpath"/flye_assembly/assembly.fasta" --outdir $outputpath"/prokka_annotation" --kingdom $kingdom --prefix "PROKKA" --force)
 fi
 
 # pharokkainstall=$(mamba list pharokka | wc -l)
