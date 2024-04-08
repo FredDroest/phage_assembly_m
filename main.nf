@@ -45,14 +45,14 @@ process ASSEMBLY {
     script:
     """
     echo "list1"
-    ls -l "${outdir}"
+    ls -l "${outdir}/stage_inputs"
     echo "list2"
-    ls -d -R ..
+    ls -lR ..
     pipeline.sh -i ${fastqfile} -o "${outdir}"
     echo "list3"
     ls -l "${outdir}"
     echo "list4"
-    ls -d -R ..
+    ls -lR ..
     """
 }
 
