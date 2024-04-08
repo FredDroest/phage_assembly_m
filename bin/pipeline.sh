@@ -118,7 +118,7 @@ if [ -f "$outputpath""/flye_medaka/consensus.fasta" ]; then
     echo "#################"
     echo "Running Prokka (on flye assembly)"
     $(prokka $outputpath"/flye_assembly/assembly.fasta" --outdir $outputpath"/prokka_annotation" --kingdom $kingdom --prefix "PROKKA" --force)
-    $(mv $outputpath"/prokka_annotation/PROKKA.log" $outputpath"/prokka_annotation/PROKKA.txt)
+    $(mv $outputpath"/prokka_annotation/PROKKA.log" $outputpath"/prokka_annotation/PROKKA.txt")
 fi
 
 # pharokkainstall=$(mamba list pharokka | wc -l)
