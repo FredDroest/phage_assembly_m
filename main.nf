@@ -40,7 +40,7 @@ process ASSEMBLY {
     val fastqfile
 
     output:
-    path('/OUTPUT'), emit: assemblyfolder
+    path('*PROKKA*'), emit: assemblyfolder
 
     script:
 
