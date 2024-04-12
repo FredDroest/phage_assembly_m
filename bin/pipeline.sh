@@ -61,14 +61,14 @@ echo "Running Flye-assembly"
 $(flye --nano-raw $outputpath/$filename"_trimmed_q_"$qualityscore"_l_"$trimlen".fastq" --out-dir $outputpath"/flye_assembly" --threads 20 --asm-coverage $coverage --iterations 2 --genome-size $genomesize)
 # $(flye --nano-raw $outputpath/$filename"_trimmed_q_"$qualityscore"_l_"$trimlen".fastq" --out-dir $outputpath"/flye_assembly" --threads 20 --asm-coverage $coverage --iterations 3 )
 $(mv $outputpath"/flye_assembly/flye.log" $outputpath"/flye_assembly/flye.txt")
-flyefolders=$(find "$outputpath"/flye_assembly" -type d)
+flyefolders=$(find $outputpath"/flye_assembly" -type d)
 $(rm -rf $flyefolders)
 echo "#################"
 # echo "running medaka"
 # $(medaka_consensus -d $outputpath"/flye_assembly/assembly.fasta" -i $outputpath/$in_name"_trimmed_q_"$qualityscore"_l_"$trimlen".fastq" -o $outputpath"/flye_medaka" -t 2 -m r941_min_sup_g507 )
 # echo "#################"
 if [ -f "$outputpath""/flye_medaka/consensus.fasta" ]; then
-  #$(bowtie2-build $outputpath"/flye_medaka/consensus.fasta")
+  # $(bowtie2-build $outputpath"/flye_medaka/consensus.fasta")
   echo "Running minimap(on medaka consensus)"
   $(minimap2 -ax map-ont $outputpath"/flye_medaka/consensus.fasta" $outputpath/$filename"_trimmed_q_"$qualityscore"_l_"$trimlen".fastq" --secondary=no | samtools view -bS | samtools sort > $outputpath/"ONT_trimmed_q_"$qualityscore"_l_"$trimlen"_to_assembly.bam"; samtools index $outputpath"/ONT_trimmed_q_"$qualityscore"_l_"$trimlen"_to_assembly.bam")
   echo "#################"
