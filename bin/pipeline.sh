@@ -62,6 +62,8 @@ $(flye --nano-raw $outputpath/$filename"_trimmed_q_"$qualityscore"_l_"$trimlen".
 # $(flye --nano-raw $outputpath/$filename"_trimmed_q_"$qualityscore"_l_"$trimlen".fastq" --out-dir $outputpath"/flye_assembly" --threads 20 --asm-coverage $coverage --iterations 3 )
 $(mv $outputpath"/flye_assembly/flye.log" $outputpath"/flye_assembly/flye.txt")
 flyefolders=$(find $outputpath"/flye_assembly/*" -type d)
+problemfile=$(find "$outputpath" -type d -name "scaffolds_links.txt")
+$(rm $problemfile)
 $(rm -rf $flyefolders)
 echo "#################"
 # echo "running medaka"
