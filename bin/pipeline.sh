@@ -61,7 +61,7 @@ echo "Running Flye-assembly"
 $(flye --nano-raw $outputpath/$filename"_trimmed_q_"$qualityscore"_l_"$trimlen".fastq" --out-dir $outputpath"/flye_assembly" --threads 20 --asm-coverage $coverage --iterations 2 --genome-size $genomesize)
 # $(flye --nano-raw $outputpath/$filename"_trimmed_q_"$qualityscore"_l_"$trimlen".fastq" --out-dir $outputpath"/flye_assembly" --threads 20 --asm-coverage $coverage --iterations 3 )
 $(mv $outputpath"/flye_assembly/flye.log" $outputpath"/flye_assembly/flye.txt")
-flyefolders=$(find $outputpath"/flye_assembly" -type d)
+flyefolders=$(find $outputpath"/flye_assembly/*" -type d)
 $(rm -rf $flyefolders)
 echo "#################"
 # echo "running medaka"
@@ -83,9 +83,9 @@ if [ -f "$outputpath""/flye_medaka/consensus.fasta" ]; then
     $(mv $outputpath"/prokka_annotation/PROKKA.log" $outputpath"/prokka_annotation/PROKKA.txt")
 fi
 # pharokkainstall=$(mamba list pharokka | wc -l)
-pharokkadbs=list=$(find ./pharokka -type d -iname "pharokkadb")
+# pharokkadbs=list=$(find ./pharokka -type d -iname "pharokkadb")
 # if [ "$pharokkainstall" -gt 3 ] && [ "$kingdom" == "Virus" ]; then
-$(pharokka.py -i $outputpath"/flye_assembly/assembly.fasta" -o $outputpath"/pharokka_annotation" -d $pharokkadbs)
+$(pharokka.py -i $outputpath"/flye_assembly/assembly.fasta" -o $outputpath"/pharokka_annotation" -d "./pharokkadb")
 # fi
 echo "#################"
 echo "Pipeline end"
