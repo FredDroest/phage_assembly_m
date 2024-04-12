@@ -20,7 +20,7 @@ echo "Pipeline start"
 
 #set default values for flye-run (also passed to script by generate_assembly.sh)
 if [ -z "$coverage" ]; then
-  coverage="50"
+  coverage="35"
 fi
 if [ -z "$genomesize" ]; then
   genomesize="45k"
@@ -35,54 +35,19 @@ if [ -z "$kingdom" ]; then
   kingdom="Virus"
 fi
 
-echo "INPUT-VALUES:"
-echo "IN-Folder: $input"
-echo "OUT-Folder: $outputpath"
-echo "genomesize: $genomesize"
-echo "kingdom: $kingdom"
-
 #INPUT-Variables
 in_name="$(basename -- "$input")"
 filename="${in_name%%.*}"
 
 echo "in_name: $in_name"
 
-#check validity of inputs
-# if [ ! -f "$input" ]; then
-#     echo "input is not a valid FILE"
-#     exit
-# echo "ERROR: Path $input does not exist, please check!"
-# else echo "input-path OK"
-# fi
-
 if [ ! -d "$outputpath" ]; then
   echo "WARNING: $outputpath does not exist, directory will be created"
   echo "creating path $outputpath"
-  mkdir -p $outputpath
+  mkdir -p "$outputpath"
   else echo "output-path OK"
 fi
 
-#list all fastq-archive-files 
-# gzlist=$(find "$input" -iname "*q.gz" | sort -V)
-# fqlist=$(find "$input" -iname "*fq" | sort -V)
-# fastqlist=$(find "$input" -iname "*fastq" | sort -V)
-
-# and check if it already exists afterwards
-# if [ -f "$outputpath/${in_name}.fastq.gz" ]; then
-#   echo "File already exists, overwriting existing version."
-#   rm "$outputpath/${in_name}.fastq.gz"
-#   else echo "keeping file"
-# fi
-# gzcombined="$outputpath/${in_name}.fastq.gz"
-gzcombined=$input
-#combine these fastq-files
-# gzcounter=0
-# for name in $gzlist; do
-#   echo "FQ.GZ: $name"
-#   cat "$name" >> "$gzcombined"
-#   gzcounter=$gzcounter+1
-# done
-# echo "in $gzcombined"
 findfastq=$(find . -type f -name "*_assemble.fastq.gz")
 
 echo "FASTQ: $findfastq"
@@ -90,18 +55,16 @@ echo "FASTQ: $findfastq"
 echo "#################"
 echo "unzipping and NanoFilt-ering"
 $(gunzip -c "$findfastq" | NanoFilt --logfile $outputpath/$in_name"_trimming.log" -q $qualityscore -l $trimlen > $outputpath/$filename"_trimmed_q_"$qualityscore"_l_"$trimlen".fastq")
-# $(rm $outputpath/$filename".fastq.gz")
+
 echo "#################"
 echo "Running Flye-assembly"
 # $(flye --nano-raw $outputpath/$filename"_trimmed_q_"$qualityscore"_l_"$trimlen".fastq" --out-dir $outputpath"/flye_assembly" --threads 8 --asm-coverage $coverage --iterations 2 --genome-size $genomesize)
-
-$(flye --nano-raw $outputpath/$filename"_trimmed_q_"$qualityscore"_l_"$trimlen".fastq" --out-dir $outputpath"/flye_assembly" --threads 8 --iterations 3 )
+$(flye --nano-raw $outputpath/$filename"_trimmed_q_"$qualityscore"_l_"$trimlen".fastq" --out-dir $outputpath"/flye_assembly" --threads 20 --asm-coverage $coverage --iterations 3 )
 $(mv $outputpath"/flye_assembly/flye.log" $outputpath"/flye_assembly/flye.txt")
 echo "#################"
-echo "running medaka"
-# change model after new basecalling to r941_min_sup_g507
-# $(medaka_consensus -d $outputpath"/flye_assembly/assembly.fasta" -i $outputpath/$in_name"_trimmed_q_"$qualityscore"_l_"$trimlen".fastq" -o $outputpath"/flye_medaka" -t 2 -m r941_min_hac_g507 )
-echo "#################"
+# echo "running medaka"
+# $(medaka_consensus -d $outputpath"/flye_assembly/assembly.fasta" -i $outputpath/$in_name"_trimmed_q_"$qualityscore"_l_"$trimlen".fastq" -o $outputpath"/flye_medaka" -t 2 -m r941_min_sup_g507 )
+# echo "#################"
 if [ -f "$outputpath""/flye_medaka/consensus.fasta" ]; then
   #$(bowtie2-build $outputpath"/flye_medaka/consensus.fasta")
   echo "Running minimap(on medaka consensus)"
@@ -119,9 +82,9 @@ if [ -f "$outputpath""/flye_medaka/consensus.fasta" ]; then
 fi
 
 # pharokkainstall=$(mamba list pharokka | wc -l)
-# pharokkadbs=list=$(find ./pharokka -type d -iname "pharokkadb")
+pharokkadbs=list=$(find ./pharokka -type d -iname "pharokkadb")
 # if [ "$pharokkainstall" -gt 3 ] && [ "$kingdom" == "Virus" ]; then
-#   $(pharokka.py -i $outputpath"/flye_assembly/assembly.fasta" -o $outputpath"/pharokka_annotation" -d $pharokkadbs)
+$(pharokka.py -i $outputpath"/flye_assembly/assembly.fasta" -o $outputpath"/pharokka_annotation" -d $pharokkadbs)
 # fi
 echo "#################"
 echo "Pipeline end"

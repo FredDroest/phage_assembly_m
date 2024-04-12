@@ -30,7 +30,7 @@ process ASSEMBLY {
     memory '32 GB'
     cpus '4'
 
-    publishDir "${params.outdir}/assembly-results", mode: 'copy'
+    publishDir "${params.outdir}/phage-assembly", mode: 'copy'
 
     container '663344187369.dkr.ecr.eu-central-1.amazonaws.com/phage_assembly_mantle:latest'
 
@@ -40,11 +40,13 @@ process ASSEMBLY {
     val fastqfile
 
     output:
-    tuple val(pipeline_run_id), path('prokka_annotation/'), emit: annotationfolder
+    tuple val(pipeline_run_id), path('prokka_annotation/'), emit: annotationfolder1
+    tuple val(pipeline_run_id), path('pharokka_annotation/'), emit: annotationfolder2
     tuple val(pipeline_run_id), path('flye_assembly/'), emit: assemblyfolder
 
     script:
     """
+    install_databases.py -o "./pharokkadb"
     pipeline.sh -i ${fastqfile} -o "."
     """
 }
@@ -63,7 +65,8 @@ process MANTLE_UPLOAD_RESULTS {
     input:
     val pipeline_run_id
     path outdir, stageAs: 'results/*'
-    val annotationdir
+    val annotationdir1
+    val annotationdir2
     val assemblydir
 
     output:
@@ -95,7 +98,8 @@ workflow {
     MANTLE_UPLOAD_RESULTS (
         params.pipeline_run_id,
         params.outdir,
-        ASSEMBLY.out.annotationfolder,
+        ASSEMBLY.out.annotationfolder1,
+        ASSEMBLY.out.annotationfolder2,
         ASSEMBLY.out.assemblyfolder
     )
 }
