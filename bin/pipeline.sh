@@ -61,8 +61,8 @@ echo "Running Flye-assembly"
 $(flye --nano-raw $outputpath/$filename"_trimmed_q_"$qualityscore"_l_"$trimlen".fastq" --out-dir $outputpath"/flye_assembly" --threads 20 --asm-coverage $coverage --iterations 2 --genome-size $genomesize)
 # $(flye --nano-raw $outputpath/$filename"_trimmed_q_"$qualityscore"_l_"$trimlen".fastq" --out-dir $outputpath"/flye_assembly" --threads 20 --asm-coverage $coverage --iterations 3 )
 $(mv $outputpath"/flye_assembly/flye.log" $outputpath"/flye_assembly/flye.txt")
-flyefolders=$(find $outputpath"/flye_assembly/*" -type d)
-problemfile=$(find "$outputpath" -type d -name "*ds_links.txt")
+flyefolders=$(find "$outputpath/flye_assembly/" -type d -name "30*")
+problemfile=$(find "$outputpath" -type f -name "*_links.txt")
 $(rm $problemfile)
 $(rm -rf $flyefolders)
 echo "#################"
