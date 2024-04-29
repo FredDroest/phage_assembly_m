@@ -63,8 +63,6 @@ $(flye --nano-raw $outputpath/$filename"_trimmed_q_"$qualityscore"_l_"$trimlen".
 $(mv $outputpath"/flye_assembly/flye.log" $outputpath"/flye_assembly/flye.txt")
 flyefolders=$(find "$outputpath/flye_assembly/" -type d -name "30*")
 # problemfile=$(find "$outputpath" -type f -name "*_links.txt")
-problemfile2=$(find "$outputpath" -type f -size 0)
-$(rm $problemfile2)
 $(rm -rf $flyefolders)
 echo "#################"
 # echo "running medaka"
@@ -94,6 +92,8 @@ loglist=$(find $outputpath -type f -name "*.log")
 for logfile in $loglist; do
 $(mv $logfile "$logfile.txt")
 done
+problemfile2=$(find "$outputpath" -type f -size 0)
+$(rm $problemfile2)
 echo "#################"
 echo "Pipeline end"
 echo "_________________"
