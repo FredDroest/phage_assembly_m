@@ -94,6 +94,8 @@ $(mv $logfile "$logfile.txt")
 done
 problemfile2=$(find "$outputpath" -type f -size 0)
 $(rm $problemfile2)
+problemfile3=$(find "$outputpath" -type f -name "*.out")
+$(rm $problemfile3)
 echo "#################"
 echo "Pipeline end"
 echo "_________________"
