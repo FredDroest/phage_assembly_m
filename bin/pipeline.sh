@@ -89,6 +89,10 @@ fi
 # if [ "$pharokkainstall" -gt 3 ] && [ "$kingdom" == "Virus" ]; then
 $(pharokka.py -i $outputpath"/flye_assembly/assembly.fasta" -o $outputpath"/pharokka_annotation" -d "./pharokkadb")
 # fi
+loglist=$(find $outputpath -type f -name "*.log")
+for logfile in $loglist; do
+$(mv $logfile "$logfile.txt")
+done
 echo "#################"
 echo "Pipeline end"
 echo "_________________"
