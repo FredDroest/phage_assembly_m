@@ -48,8 +48,8 @@ process ASSEMBLY {
     """
     install_databases.py -o "./pharokkadb"
     pipeline.sh -i ${fastqfile} -o "."
-    find "$outputpath" -type f -size 0 | rm
-    find "$outputpath" -type f -name "*.out" | rm
+    find . -type f -size 0 | rm
+    find . -type f -name "*.out" | rm
     """
 }
 
