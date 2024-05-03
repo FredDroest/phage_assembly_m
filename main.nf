@@ -48,6 +48,10 @@ process ASSEMBLY {
     """
     install_databases.py -o "./pharokkadb"
     pipeline.sh -i ${fastqfile} -o "."
+    problemfile2=$(find "$outputpath" -type f -size 0)
+    problemfile3=$(find "$outputpath" -type f -name "*.out")
+    rm $problemfile2
+    rm $problemfile3
     """
 }
 
